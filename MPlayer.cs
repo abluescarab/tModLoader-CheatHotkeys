@@ -14,7 +14,7 @@ namespace CheatHotkeys {
             }
             base.PostUpdateEquips();
         }
-        
+
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText) {
             if(((CheatHotkeys)mod).GodMode) {
                 return false;
@@ -29,6 +29,14 @@ namespace CheatHotkeys {
             }
 
             return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref deathText);
+        }
+
+        public override bool CanBeHitByProjectile(Projectile proj) {
+            if(((CheatHotkeys)mod).GodMode) {
+                return false;
+            }
+
+            return base.CanBeHitByProjectile(proj);
         }
 
         public override bool ConsumeAmmo(Item weapon, Item ammo) {
