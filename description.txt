@@ -4,3 +4,12 @@ Z: Refill life
 X: Refill mana
 F: Toggle god mode
 G: Toggle unlimited ammo
+
+[Changelog]
+2016-08-02  v1.1.0
+- Added "remove debuffs" hotkey
+- Enabling god mode refills life and removes debuffs
+- Fix: player can no longer be hit by projectiles with god mode on
+
+2016-08-01	v1.0.1
+- Added homepage
