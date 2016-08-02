@@ -4,6 +4,8 @@ Z: Refill life
 
 X: Refill mana
 
+C: Remove debuffs
+
 F: Toggle god mode
 
 G: Toggle unlimited ammo
