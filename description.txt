@@ -16,5 +16,5 @@ G: Toggle unlimited ammo
 - Enabling god mode refills life and removes debuffs
 - Fix: player can no longer be hit by projectiles with god mode on
 
-2016-08-01	v1.0.1
+2016-08-01  v1.0.1
 - Added homepage
