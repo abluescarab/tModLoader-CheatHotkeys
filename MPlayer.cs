@@ -8,13 +8,6 @@ namespace CheatHotkeys {
             return true;
         }
 
-        public override void PostUpdateEquips() {
-            if(((CheatHotkeys)mod).GodMode) {
-                player.statMana = player.statManaMax;
-            }
-            base.PostUpdateEquips();
-        }
-
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref string deathText) {
             if(((CheatHotkeys)mod).GodMode) {
                 return false;
@@ -29,6 +22,17 @@ namespace CheatHotkeys {
             }
 
             return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref deathText);
+        }
+
+        public override void PreUpdateBuffs() {
+            CheatHotkeys chmod = (CheatHotkeys)mod;
+
+            if(chmod.GodMode) {
+                chmod.RemoveDebuffs();
+                player.statMana = player.statManaMax;
+            }
+
+            base.PreUpdateBuffs();
         }
 
         public override bool CanBeHitByProjectile(Projectile proj) {
