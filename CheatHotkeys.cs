@@ -60,18 +60,23 @@ namespace CheatHotkeys {
             if(PlayerInput.Triggers.JustPressed.KeyStatus[GetTriggerName(name)]) {
                 if(name.Equals(lifeKey.Name)) {
                     RefillLife();
+                    Main.NewText("Life refilled!");
                 }
                 else if(name.Equals(manaKey.Name)) {
                     RefillMana();
+                    Main.NewText("Mana refilled!");
                 }
                 else if(name.Equals(removeDebuffs.Name)) {
                     RemoveDebuffs();
+                    Main.NewText("Removed debuffs!");
                 }
                 else if(name.Equals(godModeKey.Name)) {
                     ToggleGodMode();
+                    Main.NewText("God mode has been " + (GodMode ? "enabled" : "disabled") + "!");
                 }
                 else if(name.Equals(unlimitedAmmoKey.Name)) {
                     ToggleUnlimitedAmmo();
+                    Main.NewText("Unlimited ammo has been " + (UnlimitedAmmo ? "enabled" : "disabled") + "!");
                 }
             }
         }
@@ -80,16 +85,14 @@ namespace CheatHotkeys {
             Player player = Main.player[Main.myPlayer];
             player.statLife = player.statLifeMax;
             player.HealEffect(player.statLifeMax, true);
-            Main.NewText("Life refilled!");
         }
 
         public void RefillMana() {
             Player player = Main.player[Main.myPlayer];
             player.statMana = player.statManaMax;
             player.ManaEffect(player.statManaMax);
-            Main.NewText("Mana refilled!");
         }
-
+        
         public void RemoveDebuffs() {
             Player player = Main.player[Main.myPlayer];
 
@@ -98,8 +101,6 @@ namespace CheatHotkeys {
                     player.ClearBuff(debuff);
                 }
             }
-
-            Main.NewText("Removed debuffs!");
         }
 
         public void ToggleGodMode() {
@@ -109,13 +110,10 @@ namespace CheatHotkeys {
                 RefillLife();
                 RemoveDebuffs();
             }
-
-            Main.NewText("God mode has been " + (GodMode ? "enabled" : "disabled") + "!");
         }
 
         public void ToggleUnlimitedAmmo() {
             UnlimitedAmmo = !UnlimitedAmmo;
-            Main.NewText("Unlimited ammo has been " + (UnlimitedAmmo  ? "enabled" : "disabled") + "!");
         }
 
         public string GetTriggerName(string name) {
