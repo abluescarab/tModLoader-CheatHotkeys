@@ -11,7 +11,6 @@ G: Toggle unlimited ammo
 * Mana is automatically refilled when god mode is enabled
 * No longer displays "mana refilled" and "life refilled" messages when god mode is enabled
 
-
 2016-08-02  v1.1.0
 - Added "remove debuffs" hotkey
 - Enabling god mode refills life and removes debuffs
