@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 
 namespace CheatHotkeys {
-    internal class MPlayer : ModPlayer {
+    internal class CheatHotkeysPlayer : ModPlayer {
         public override bool Autoload(ref string name) {
             return true;
         }
