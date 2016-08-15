@@ -7,20 +7,6 @@ using Terraria.ModLoader;
 
 namespace CheatHotkeys {
     public class CheatHotkeys : Mod {
-        private static int[] debuffs = new int[] {
-            BuffID.Poisoned, BuffID.PotionSickness, BuffID.Darkness,
-            BuffID.Cursed, BuffID.OnFire, BuffID.Tipsy, BuffID.Bleeding,
-            BuffID.Confused, BuffID.Slow, BuffID.Weak,
-            BuffID.Silenced, BuffID.BrokenArmor, BuffID.CursedInferno,
-            BuffID.Chilled, BuffID.Frozen, BuffID.Ichor,
-            BuffID.Venom, BuffID.Midas, BuffID.Blackout,
-            BuffID.ChaosState, BuffID.ManaSickness, BuffID.Wet,
-            BuffID.Stinky, BuffID.Slimed, BuffID.Electrified,
-            BuffID.MoonLeech, BuffID.Rabies, BuffID.Webbed,
-            BuffID.ShadowFlame, BuffID.Stoned, BuffID.Dazed,
-            BuffID.VortexDebuff, BuffID.BoneJavelin, BuffID.Daybreak,
-            BuffID.StardustMinionBleed
-        };
         private bool godMode = false;
         private bool unlimitedAmmo = false;
 
@@ -39,11 +25,7 @@ namespace CheatHotkeys {
             get { return unlimitedAmmo; }
             set { unlimitedAmmo = value; }
         }
-
-        public static int[] Debuffs {
-            get { return debuffs; }
-        }
-
+        
         public override void Load() {
             Properties = new ModProperties() {
                 Autoload = true
@@ -92,13 +74,23 @@ namespace CheatHotkeys {
             player.statMana = player.statManaMax;
             player.ManaEffect(player.statManaMax);
         }
-        
+
         public void RemoveDebuffs() {
             Player player = Main.player[Main.myPlayer];
 
-            foreach(int debuff in debuffs) {
-                if(player.HasBuff(debuff) > -1) {
-                    player.ClearBuff(debuff);
+            for(int i = 0; i < Main.debuff.Length; i++) {
+                switch(i) {
+                    case BuffID.Horrified:      // fighting Wall of Flesh
+                    case BuffID.TheTongue:      // in contact with Wall of Flesh tongue
+                    case BuffID.Obstructed:     // attacked by a Brain Suckler
+                    case BuffID.Suffocation:    // in contact with silt/sand/slush
+                    case BuffID.Burning:        // in contact with hot blocks
+                    case BuffID.WaterCandle:    // around a water candle
+                        break;
+                    default:
+                        if(Main.debuff[i])
+                            player.ClearBuff(i);
+                        break;
                 }
             }
         }

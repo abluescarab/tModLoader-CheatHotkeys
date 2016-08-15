@@ -6,15 +6,21 @@ F: Toggle god mode
 G: Toggle unlimited ammo
 
 [Changelog]
-2016-08-12  v1.2.0
+v1.2.1  2016-08-14
+* Remove debuffs hotkey should now work for mod debuffs
+
+v1.2.0  2016-08-12
 * Player cannot be affected by debuffs when god mode is enabled
 * Mana is automatically refilled when god mode is enabled
 * No longer displays "mana refilled" and "life refilled" messages when god mode is enabled
 
-2016-08-02  v1.1.0
+v1.1.0  2016-08-02
 - Added "remove debuffs" hotkey
 - Enabling god mode refills life and removes debuffs
 - Fix: player can no longer be hit by projectiles with god mode on
 
-2016-08-01  v1.0.1
+v1.0.1  2016-08-01
 - Added homepage
+
+[Credits]
+* Boffin for recommending the mod debuff solution

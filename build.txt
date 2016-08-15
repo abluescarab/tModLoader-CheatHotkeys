@@ -1,6 +1,6 @@
 ﻿displayName=Cheat Hotkeys
 author=abluescarab
-version=1.2.0
+version=1.2.1
 dllReferences=
 modReferences=
 noCompile=false
