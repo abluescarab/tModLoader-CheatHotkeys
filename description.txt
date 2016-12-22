@@ -6,6 +6,9 @@ F: Toggle god mode
 G: Toggle unlimited ammo
 
 [Changelog]
+v1.2.3  2016-12-22
+* Fixed calls to Fixed calls to PreHurt and PreKill
+
 v1.2.2  2016-10-01
 * Compiled for Terraria 1.3.3.2
 
