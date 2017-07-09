@@ -6,6 +6,9 @@ F: Toggle god mode
 G: Toggle unlimited ammo
 
 [Changelog]
+v1.2.4  2017-07-09
+* Compiled for tModLoader v0.10.0.2
+
 v1.2.3  2016-12-22
 * Fixed calls to Fixed calls to PreHurt and PreKill
 
