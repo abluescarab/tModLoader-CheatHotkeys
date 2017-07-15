@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.GameInput;
 using Terraria.ModLoader;
 
 namespace CheatHotkeys {
@@ -10,11 +8,11 @@ namespace CheatHotkeys {
         private bool godMode = false;
         private bool unlimitedAmmo = false;
 
-        private HotKey lifeKey = new HotKey("Refill Life", Keys.Z);
-        private HotKey manaKey = new HotKey("Refill Mana", Keys.X);
-        private HotKey removeDebuffs = new HotKey("Remove Debuffs", Keys.C);
-        private HotKey godModeKey = new HotKey("Toggle God Mode", Keys.F);
-        private HotKey unlimitedAmmoKey = new HotKey("Toggle Unlimited Ammo", Keys.G);
+        private ModHotKey lifeKey;
+        private ModHotKey manaKey;
+        private ModHotKey removeDebuffsKey;
+        private ModHotKey godModeKey;
+        private ModHotKey unlimitedAmmoKey;
 
         public bool GodMode {
             get { return godMode; }
@@ -25,41 +23,39 @@ namespace CheatHotkeys {
             get { return unlimitedAmmo; }
             set { unlimitedAmmo = value; }
         }
-        
+
         public override void Load() {
             Properties = new ModProperties() {
                 Autoload = true
             };
 
-            RegisterHotKey(lifeKey.Name, lifeKey.DefaultKey.ToString());
-            RegisterHotKey(manaKey.Name, manaKey.DefaultKey.ToString());
-            RegisterHotKey(removeDebuffs.Name, removeDebuffs.DefaultKey.ToString());
-            RegisterHotKey(godModeKey.Name, godModeKey.DefaultKey.ToString());
-            RegisterHotKey(unlimitedAmmoKey.Name, unlimitedAmmoKey.DefaultKey.ToString());
+            lifeKey = RegisterHotKey("Refill Life", Keys.Z.ToString());
+            manaKey = RegisterHotKey("Refill Mana", Keys.X.ToString());
+            removeDebuffsKey = RegisterHotKey("Remove Debuffs", Keys.C.ToString());
+            godModeKey = RegisterHotKey("Toggle God Mode", Keys.F.ToString());
+            unlimitedAmmoKey = RegisterHotKey("Toggle Unlimited Ammo", Keys.G.ToString());
         }
 
         public override void HotKeyPressed(string name) {
-            if(PlayerInput.Triggers.JustPressed.KeyStatus[GetTriggerName(name)]) {
-                if(name.Equals(lifeKey.Name)) {
-                    RefillLife();
-                    Main.NewText("Life refilled!");
-                }
-                else if(name.Equals(manaKey.Name)) {
-                    RefillMana();
-                    Main.NewText("Mana refilled!");
-                }
-                else if(name.Equals(removeDebuffs.Name)) {
-                    RemoveDebuffs();
-                    Main.NewText("Removed debuffs!");
-                }
-                else if(name.Equals(godModeKey.Name)) {
-                    ToggleGodMode();
-                    Main.NewText("God mode has been " + (GodMode ? "enabled" : "disabled") + "!");
-                }
-                else if(name.Equals(unlimitedAmmoKey.Name)) {
-                    ToggleUnlimitedAmmo();
-                    Main.NewText("Unlimited ammo has been " + (UnlimitedAmmo ? "enabled" : "disabled") + "!");
-                }
+            if(lifeKey.JustPressed) {
+                RefillLife();
+                Main.NewText("Life refilled!");
+            }
+            else if(manaKey.JustPressed) {
+                RefillMana();
+                Main.NewText("Mana refilled!");
+            }
+            else if(removeDebuffsKey.JustPressed) {
+                RemoveDebuffs();
+                Main.NewText("Removed debuffs!");
+            }
+            else if(godModeKey.JustPressed) {
+                ToggleGodMode();
+                Main.NewText("God mode has been " + (GodMode ? "enabled" : "disabled") + "!");
+            }
+            else if(unlimitedAmmoKey.JustPressed) {
+                ToggleUnlimitedAmmo();
+                Main.NewText("Unlimited ammo has been " + (UnlimitedAmmo ? "enabled" : "disabled") + "!");
             }
         }
 
