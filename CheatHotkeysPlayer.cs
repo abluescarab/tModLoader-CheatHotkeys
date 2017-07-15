@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 
 namespace CheatHotkeys {
     internal class CheatHotkeysPlayer : ModPlayer {
+        private readonly int BUFF_TIME = int.MaxValue;
+
         public override bool Autoload(ref string name) {
             return true;
         }
@@ -73,10 +75,65 @@ namespace CheatHotkeys {
                     case BuffID.WaterCandle:    // around a water candle
                         break;
                     default:
-                        if(Main.debuff[i])
+                        if(Main.debuff[i]) {
                             player.ClearBuff(i);
+                        }
                         break;
                 }
+            }
+        }
+
+        public void UpdateMiningBuffs(MiningBuffMode mode) {
+            if(mode == MiningBuffMode.All) {
+                EnableMiningBuff(MiningBuffMode.Dangersense);
+                EnableMiningBuff(MiningBuffMode.Hunter);
+                EnableMiningBuff(MiningBuffMode.Spelunker);
+            }
+            else if(mode == MiningBuffMode.None) {
+                DisableMiningBuff(MiningBuffMode.Dangersense);
+                DisableMiningBuff(MiningBuffMode.Hunter);
+                DisableMiningBuff(MiningBuffMode.Spelunker);
+            }
+            else {
+                if(mode == MiningBuffMode.Dangersense)
+                    EnableMiningBuff(MiningBuffMode.Dangersense);
+                else
+                    DisableMiningBuff(MiningBuffMode.Dangersense);
+
+                if(mode == MiningBuffMode.Hunter)
+                    EnableMiningBuff(MiningBuffMode.Hunter);
+                else
+                    DisableMiningBuff(MiningBuffMode.Hunter);
+
+                if(mode == MiningBuffMode.Spelunker)
+                    EnableMiningBuff(MiningBuffMode.Spelunker);
+                else
+                    DisableMiningBuff(MiningBuffMode.Spelunker);
+            }
+        }
+
+        public void DisableMiningBuff(MiningBuffMode mode) {
+            if(mode == MiningBuffMode.All || mode == MiningBuffMode.None) return;
+
+            CheatHotkeys chmod = (CheatHotkeys)mod;
+
+            if(chmod.EnabledByHotkey[mode]) {
+                player.ClearBuff((int)mode);
+                chmod.EnabledByHotkey[mode] = false;
+            }
+        }
+
+        public void EnableMiningBuff(MiningBuffMode mode) {
+            if(mode == MiningBuffMode.All || mode == MiningBuffMode.None) return;
+
+            CheatHotkeys chmod = (CheatHotkeys)mod;
+
+            if(player.FindBuffIndex((int)mode) == -1) {
+                chmod.EnabledByHotkey[mode] = true;
+            }
+
+            if(chmod.EnabledByHotkey[mode]) {
+                player.AddBuff((int)mode, BUFF_TIME, true);
             }
         }
     }
