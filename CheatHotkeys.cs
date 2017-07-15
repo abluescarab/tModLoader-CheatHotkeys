@@ -84,13 +84,13 @@ namespace CheatHotkeys {
         }
 
         public void RefillLife() {
-            Player player = Main.player[Main.myPlayer];
+            Player player = Main.LocalPlayer;
             player.statLife = player.statLifeMax;
             player.HealEffect(player.statLifeMax, true);
         }
 
         public void RefillMana() {
-            Player player = Main.player[Main.myPlayer];
+            Player player = Main.LocalPlayer;
             player.statMana = player.statManaMax;
             player.ManaEffect(player.statManaMax);
         }
