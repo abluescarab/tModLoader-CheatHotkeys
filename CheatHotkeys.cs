@@ -5,24 +5,14 @@ using Terraria.ModLoader;
 
 namespace CheatHotkeys {
     public class CheatHotkeys : Mod {
-        private bool godMode = false;
-        private bool unlimitedAmmo = false;
-
         private ModHotKey lifeKey;
         private ModHotKey manaKey;
         private ModHotKey removeDebuffsKey;
         private ModHotKey godModeKey;
         private ModHotKey unlimitedAmmoKey;
-
-        public bool GodMode {
-            get { return godMode; }
-            set { godMode = value; }
-        }
-
-        public bool UnlimitedAmmo {
-            get { return unlimitedAmmo; }
-            set { unlimitedAmmo = value; }
-        }
+        
+        public bool GodMode { get; set; }
+        public bool UnlimitedAmmo { get; set; }
 
         public override void Load() {
             Properties = new ModProperties() {
