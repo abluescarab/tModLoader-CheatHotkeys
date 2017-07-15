@@ -84,35 +84,15 @@ namespace CheatHotkeys {
         }
 
         public void RefillLife() {
-            Player player = Main.LocalPlayer;
-            player.statLife = player.statLifeMax;
-            player.HealEffect(player.statLifeMax, true);
+            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().RefillLife();
         }
 
         public void RefillMana() {
-            Player player = Main.LocalPlayer;
-            player.statMana = player.statManaMax;
-            player.ManaEffect(player.statManaMax);
+            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().RefillMana();
         }
 
         public void RemoveDebuffs() {
-            Player player = Main.player[Main.myPlayer];
-
-            for(int i = 0; i < Main.debuff.Length; i++) {
-                switch(i) {
-                    case BuffID.Horrified:      // fighting Wall of Flesh
-                    case BuffID.TheTongue:      // in contact with Wall of Flesh tongue
-                    case BuffID.Obstructed:     // attacked by a Brain Suckler
-                    case BuffID.Suffocation:    // in contact with silt/sand/slush
-                    case BuffID.Burning:        // in contact with hot blocks
-                    case BuffID.WaterCandle:    // around a water candle
-                        break;
-                    default:
-                        if(Main.debuff[i])
-                            player.ClearBuff(i);
-                        break;
-                }
-            }
+            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().RemoveDebuffs();
         }
 
         public void ToggleGodMode() {
