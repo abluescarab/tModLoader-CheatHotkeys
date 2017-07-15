@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace CheatHotkeys {
@@ -29,7 +29,7 @@ namespace CheatHotkeys {
             CheatHotkeys chmod = (CheatHotkeys)mod;
 
             if(chmod.GodMode) {
-                chmod.RemoveDebuffs();
+                RemoveDebuffs();
                 player.statMana = player.statManaMax;
             }
 
@@ -50,6 +50,34 @@ namespace CheatHotkeys {
             }
 
             return base.ConsumeAmmo(weapon, ammo);
+        }
+
+        public void RefillLife() {
+            player.statLife = player.statLifeMax;
+            player.HealEffect(player.statLifeMax, true);
+        }
+
+        public void RefillMana() {
+            player.statMana = player.statManaMax;
+            player.ManaEffect(player.statManaMax);
+        }
+
+        public void RemoveDebuffs() {
+            for(int i = 0; i < Main.debuff.Length; i++) {
+                switch(i) {
+                    case BuffID.Horrified:      // fighting Wall of Flesh
+                    case BuffID.TheTongue:      // in contact with Wall of Flesh tongue
+                    case BuffID.Obstructed:     // attacked by a Brain Suckler
+                    case BuffID.Suffocation:    // in contact with silt/sand/slush
+                    case BuffID.Burning:        // in contact with hot blocks
+                    case BuffID.WaterCandle:    // around a water candle
+                        break;
+                    default:
+                        if(Main.debuff[i])
+                            player.ClearBuff(i);
+                        break;
+                }
+            }
         }
     }
 }
