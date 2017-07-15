@@ -93,9 +93,5 @@ namespace CheatHotkeys {
         public void ToggleUnlimitedAmmo() {
             UnlimitedAmmo = !UnlimitedAmmo;
         }
-
-        public string GetTriggerName(string name) {
-            return Name + ": " + name;
-        }
     }
 }
