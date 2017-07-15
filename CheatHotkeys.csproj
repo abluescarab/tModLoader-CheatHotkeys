@@ -49,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CheatHotkeys.cs" />
-    <Compile Include="HotKey.cs" />
     <Compile Include="CheatHotkeysPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
