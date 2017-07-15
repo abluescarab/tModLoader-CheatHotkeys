@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="CheatHotkeys.cs" />
     <Compile Include="CheatHotkeysPlayer.cs" />
+    <Compile Include="MiningBuffMode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
