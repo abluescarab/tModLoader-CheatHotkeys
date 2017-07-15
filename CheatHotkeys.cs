@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Terraria;
 using Terraria.ID;
@@ -6,14 +7,6 @@ using Terraria.ModLoader;
 
 namespace CheatHotkeys {
     public class CheatHotkeys : Mod {
-        public enum MiningBuffMode {
-            All = 0,
-            None = -1,
-            Dangersense = BuffID.Dangersense,
-            Hunter = BuffID.Hunter,
-            Spelunker = BuffID.Spelunker
-        }
-
         private ModHotKey lifeKey;
         private ModHotKey manaKey;
         private ModHotKey removeDebuffsKey;
@@ -27,6 +20,7 @@ namespace CheatHotkeys {
         public bool GodMode { get; set; }
         public bool UnlimitedAmmo { get; set; }
         public MiningBuffMode MiningBuff { get; set; }
+        public Dictionary<MiningBuffMode, bool> EnabledByHotkey { get; private set; }
 
         public override void Load() {
             Properties = new ModProperties() {
@@ -39,6 +33,11 @@ namespace CheatHotkeys {
             miningBuffKey = RegisterHotKey("Mining Buff Mode", Keys.V.ToString());
             godModeKey = RegisterHotKey("Toggle God Mode", Keys.F.ToString());
             unlimitedAmmoKey = RegisterHotKey("Toggle Unlimited Ammo", Keys.G.ToString());
+
+            EnabledByHotkey = new Dictionary<MiningBuffMode, bool>(3);
+            EnabledByHotkey.Add(MiningBuffMode.Dangersense, false);
+            EnabledByHotkey.Add(MiningBuffMode.Hunter, false);
+            EnabledByHotkey.Add(MiningBuffMode.Spelunker, false);
         }
 
         public override void HotKeyPressed(string name) {
@@ -109,6 +108,8 @@ namespace CheatHotkeys {
         }
 
         public void CycleMiningBuffMode() {
+            MiningBuffMode lastMode = MiningBuff;
+
             switch(MiningBuff) {
                 case MiningBuffMode.Dangersense:
                     MiningBuff = MiningBuffMode.Hunter;
@@ -123,10 +124,26 @@ namespace CheatHotkeys {
                     MiningBuff = MiningBuffMode.Dangersense;
                     break;
             }
+
+            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().UpdateMiningBuffs(MiningBuff);
         }
 
         public void ToggleMiningBuffModes() {
+            Player player = Main.LocalPlayer;
+            int dangersense = player.FindBuffIndex((int)MiningBuffMode.Dangersense);
+            int hunter = player.FindBuffIndex((int)MiningBuffMode.Hunter);
+            int spelunker = player.FindBuffIndex((int)MiningBuffMode.Spelunker);
+
             MiningBuff = (MiningBuff == MiningBuffMode.None ? MiningBuffMode.All : MiningBuffMode.None);
+
+            if(dangersense == -1 && hunter == -1 && spelunker == -1 && MiningBuff == MiningBuffMode.None) {
+                MiningBuff = MiningBuffMode.All;
+            }
+            else if(dangersense >= 0 && hunter >= 0 && spelunker >= 0 && MiningBuff == MiningBuffMode.All) {
+                MiningBuff = MiningBuffMode.None;
+            }
+
+            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().UpdateMiningBuffs(MiningBuff);
         }
     }
 }
