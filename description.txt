@@ -10,6 +10,9 @@
     Turn on/off all three mining buff modes
 
 [Changelog]
+v2.0.1  2017-11-06
+* Compiled for tModLoader v0.10.1
+
 v2.0.0  2017-07-15
 * Added "mining buff" hotkey
 
