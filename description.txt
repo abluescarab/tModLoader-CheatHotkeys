@@ -3,6 +3,7 @@
 * Refill life (Z)
 * Refill mana (X)
 * Toggle god mode (F)
+* Give 10 platinum (P)
 * Toggle unlimited ammo (G)
 * Cycle mining buff modes (V)
     Cycle between Dangersense, Hunter, and Spelunker vision
@@ -10,6 +11,9 @@
     Turn on/off all three mining buff modes
 
 [Changelog]
+v2.1.0  2017-11-30
+* Added "Give Money" hotkey
+
 v2.0.1  2017-11-06
 * Compiled for tModLoader v0.10.1
 
