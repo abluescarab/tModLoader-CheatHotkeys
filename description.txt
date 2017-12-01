@@ -11,6 +11,9 @@
     Turn on/off all three mining buff modes
 
 [Changelog]
+v2.1.1  2017-12-01
+* Refills buffed life/mana to max
+
 v2.1.0  2017-11-30
 * Added "Give Money" hotkey
 
