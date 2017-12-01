@@ -13,9 +13,15 @@ namespace CheatHotkeys {
         private ModHotKey miningBuffKey;
         private ModHotKey godModeKey;
         private ModHotKey unlimitedAmmoKey;
+        private ModHotKey moneyKey;
 
         private bool miningBuffKeyPressed = false;
         private double miningBuffKeyPressTime = 0.0;
+
+        private bool moneyKeyPressed = false;
+        private double moneyKeyPressTime = 0.0;
+        private int moneyKeySpeedMultiplier = 1;
+        private double moneyKeyIncreaseTime = 0.0;
 
         public bool GodMode { get; set; }
         public bool UnlimitedAmmo { get; set; }
@@ -33,6 +39,7 @@ namespace CheatHotkeys {
             miningBuffKey = RegisterHotKey("Mining Buff Mode", Keys.V.ToString());
             godModeKey = RegisterHotKey("Toggle God Mode", Keys.F.ToString());
             unlimitedAmmoKey = RegisterHotKey("Toggle Unlimited Ammo", Keys.G.ToString());
+            moneyKey = RegisterHotKey("Give Money", Keys.P.ToString());
 
             EnabledByHotkey = new Dictionary<MiningBuffMode, bool>(3);
             EnabledByHotkey.Add(MiningBuffMode.Dangersense, false);
@@ -65,6 +72,11 @@ namespace CheatHotkeys {
                 miningBuffKeyPressed = true;
                 miningBuffKeyPressTime = Main._drawInterfaceGameTime.TotalGameTime.TotalMilliseconds;
             }
+            else if(moneyKey.JustPressed) {
+                GiveMoney();
+                moneyKeyPressed = true;
+                moneyKeyPressTime = Main._drawInterfaceGameTime.TotalGameTime.TotalMilliseconds;
+            }
         }
 
         public override void PostUpdateInput() {
@@ -80,6 +92,25 @@ namespace CheatHotkeys {
                 Main.NewText("Mining buff set to " + MiningBuff.ToString() + "!");
                 miningBuffKeyPressed = false;
             }
+
+            if(moneyKeyPressed) {
+                if(!moneyKey.Current) {
+                    moneyKeySpeedMultiplier = 1;
+                    Main.NewText("Gave you lots of money!");
+                    moneyKeyPressed = false;
+                }
+                else {
+                    if((time.TotalGameTime.TotalMilliseconds - moneyKeyIncreaseTime) >= 1000.0 & (moneyKeySpeedMultiplier < 32)) {
+                        moneyKeySpeedMultiplier *= 2;
+                        moneyKeyIncreaseTime = time.TotalGameTime.TotalMilliseconds;
+                    }
+
+                    if((time.TotalGameTime.TotalMilliseconds - moneyKeyPressTime) >= (1000.0 / moneyKeySpeedMultiplier)) {
+                        GiveMoney();
+                        moneyKeyPressTime = time.TotalGameTime.TotalMilliseconds;
+                    }
+                }
+            }
         }
 
         public void RefillLife() {
@@ -92,6 +123,11 @@ namespace CheatHotkeys {
 
         public void RemoveDebuffs() {
             Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().RemoveDebuffs();
+        }
+
+        public void GiveMoney() {
+            Player player = Main.LocalPlayer;
+            Item.NewItem(player.position, player.width, player.height, ItemID.PlatinumCoin, Stack: 10);
         }
 
         public void ToggleGodMode() {
