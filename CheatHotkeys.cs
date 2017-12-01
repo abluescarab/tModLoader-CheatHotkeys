@@ -118,7 +118,7 @@ namespace CheatHotkeys {
         }
 
         public void RefillMana() {
-            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().RefillMana();
+            Main.LocalPlayer.GetModPlayer<CheatHotkeysPlayer>().RefillMana(true);
         }
 
         public void RemoveDebuffs() {
@@ -127,7 +127,7 @@ namespace CheatHotkeys {
 
         public void GiveMoney() {
             Player player = Main.LocalPlayer;
-            Item.NewItem(player.position, player.width, player.height, ItemID.PlatinumCoin, Stack: 10);
+            player.QuickSpawnItem(ItemID.PlatinumCoin, 10);
         }
 
         public void ToggleGodMode() {
