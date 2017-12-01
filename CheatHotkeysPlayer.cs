@@ -32,7 +32,7 @@ namespace CheatHotkeys {
 
             if(chmod.GodMode) {
                 RemoveDebuffs();
-                player.statMana = player.statManaMax;
+                RefillMana(false);
             }
 
             base.PreUpdateBuffs();
@@ -55,13 +55,20 @@ namespace CheatHotkeys {
         }
 
         public void RefillLife() {
-            player.statLife = player.statLifeMax;
-            player.HealEffect(player.statLifeMax, true);
+            int maxLife = (player.statLifeMax2 > player.statLifeMax ? player.statLifeMax2 : player.statLifeMax);
+
+            player.statLife = maxLife;
+            player.HealEffect(maxLife, true);
         }
 
-        public void RefillMana() {
-            player.statMana = player.statManaMax;
-            player.ManaEffect(player.statManaMax);
+        public void RefillMana(bool showEffect) {
+            int maxMana = (player.statManaMax2 > player.statManaMax ? player.statManaMax2 : player.statManaMax);
+
+            player.statMana = maxMana;
+
+            if(showEffect) {
+                player.ManaEffect(maxMana);
+            }
         }
 
         public void RemoveDebuffs() {
