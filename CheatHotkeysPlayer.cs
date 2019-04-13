@@ -28,9 +28,7 @@ namespace CheatHotkeys {
         }
 
         public override void PreUpdateBuffs() {
-            CheatHotkeys chmod = (CheatHotkeys)mod;
-
-            if(chmod.GodMode) {
+            if(((CheatHotkeys)mod).GodMode) {
                 RemoveDebuffs();
                 RefillMana(false);
             }

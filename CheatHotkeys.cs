@@ -65,7 +65,7 @@ namespace CheatHotkeys {
                 Main.NewText("God mode has been " + (GodMode ? "enabled" : "disabled") + "!");
             }
             else if(unlimitedAmmoKey.JustPressed) {
-                ToggleUnlimitedAmmo();
+                UnlimitedAmmo = !UnlimitedAmmo;
                 Main.NewText("Unlimited ammo has been " + (UnlimitedAmmo ? "enabled" : "disabled") + "!");
             }
             else if(miningBuffKey.JustPressed) {
@@ -137,10 +137,6 @@ namespace CheatHotkeys {
                 RefillLife();
                 RemoveDebuffs();
             }
-        }
-
-        public void ToggleUnlimitedAmmo() {
-            UnlimitedAmmo = !UnlimitedAmmo;
         }
 
         public void CycleMiningBuffMode() {
