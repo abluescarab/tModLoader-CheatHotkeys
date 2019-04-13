@@ -5,12 +5,16 @@
 * Toggle god mode (F)
 * Give 10 platinum (P)
 * Toggle unlimited ammo (G)
+* Toggle knockback (N)
 * Cycle mining buff modes (V)
     Cycle between Dangersense, Hunter, and Spelunker vision
 * Toggle mining buff modes (hold V)
     Turn on/off all three mining buff modes
 
 [Changelog]
+v2.2.0  2019-04-13
+* Added toggle knockback key
+
 v2.1.1  2017-12-01
 * Refills buffed life/mana to max
 
