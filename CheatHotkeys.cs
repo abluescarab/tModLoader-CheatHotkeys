@@ -14,6 +14,7 @@ namespace CheatHotkeys {
         private ModHotKey godModeKey;
         private ModHotKey unlimitedAmmoKey;
         private ModHotKey moneyKey;
+        private ModHotKey disableKnockbackKey;
 
         private bool miningBuffKeyPressed = false;
         private double miningBuffKeyPressTime = 0.0;
@@ -25,6 +26,7 @@ namespace CheatHotkeys {
 
         public bool GodMode { get; set; }
         public bool UnlimitedAmmo { get; set; }
+        public bool KnockbackDisabled { get; set; }
         public MiningBuffMode MiningBuff { get; set; }
         public Dictionary<MiningBuffMode, bool> EnabledByHotkey { get; private set; }
 
@@ -40,6 +42,7 @@ namespace CheatHotkeys {
             godModeKey = RegisterHotKey("Toggle God Mode", Keys.F.ToString());
             unlimitedAmmoKey = RegisterHotKey("Toggle Unlimited Ammo", Keys.G.ToString());
             moneyKey = RegisterHotKey("Give Money", Keys.P.ToString());
+            disableKnockbackKey = RegisterHotKey("Disable Knockback", Keys.N.ToString());
 
             EnabledByHotkey = new Dictionary<MiningBuffMode, bool>(3);
             EnabledByHotkey.Add(MiningBuffMode.Dangersense, false);
@@ -76,6 +79,10 @@ namespace CheatHotkeys {
                 GiveMoney();
                 moneyKeyPressed = true;
                 moneyKeyPressTime = Main._drawInterfaceGameTime.TotalGameTime.TotalMilliseconds;
+            }
+            else if(disableKnockbackKey.JustPressed) {
+                KnockbackDisabled = !KnockbackDisabled;
+                Main.NewText("Knockback has been " + (KnockbackDisabled ? "disabled" : "enabled") + "!");
             }
         }
 

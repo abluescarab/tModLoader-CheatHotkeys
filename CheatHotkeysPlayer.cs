@@ -12,8 +12,14 @@ namespace CheatHotkeys {
         }
 
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-            if(((CheatHotkeys)mod).GodMode) {
+            CheatHotkeys chmod = (CheatHotkeys)mod;
+
+            if(chmod.GodMode) {
                 return false;
+            }
+
+            if(chmod.KnockbackDisabled) {
+                hitDirection = 0;
             }
 
             return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
