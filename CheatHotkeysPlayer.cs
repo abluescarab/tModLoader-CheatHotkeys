@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -7,26 +8,56 @@ namespace CheatHotkeys {
     internal class CheatHotkeysPlayer : ModPlayer {
         private readonly int BUFF_TIME = int.MaxValue;
 
-        public override bool Autoload(ref string name) {
-            return true;
+        public override void ProcessTriggers(TriggersSet triggersSet) {
+            if(CheatHotkeysSystem.LifeKey.JustPressed) {
+                RefillLife();
+                Main.NewText("Life refilled!");
+            }
+            else if(CheatHotkeysSystem.ManaKey.JustPressed) {
+                RefillMana(true);
+                Main.NewText("Mana refilled!");
+            }
+            else if(CheatHotkeysSystem.RemoveDebuffsKey.JustPressed) {
+                RemoveDebuffs();
+                Main.NewText("Removed debuffs!");
+            }
+            else if(CheatHotkeysSystem.GodModeKey.JustPressed) {
+                ToggleGodMode();
+                Main.NewText("God mode has been " + (CheatHotkeysSystem.GodMode ? "enabled" : "disabled") + "!");
+            }
+            else if(CheatHotkeysSystem.UnlimitedAmmoKey.JustPressed) {
+                CheatHotkeysSystem.UnlimitedAmmo = !CheatHotkeysSystem.UnlimitedAmmo;
+                Main.NewText("Unlimited ammo has been " + (CheatHotkeysSystem.UnlimitedAmmo ? "enabled" : "disabled") + "!");
+            }
+            else if(CheatHotkeysSystem.MiningBuffKey.JustPressed) {
+                CheatHotkeysSystem.MiningBuffKeyPressed = true;
+                CheatHotkeysSystem.MiningBuffKeyPressTime = Main._drawInterfaceGameTime.TotalGameTime.TotalMilliseconds;
+            }
+            else if(CheatHotkeysSystem.MoneyKey.JustPressed) {
+                GiveMoney();
+                CheatHotkeysSystem.MoneyKeyPressed = true;
+                CheatHotkeysSystem.MoneyKeyPressTime = Main._drawInterfaceGameTime.TotalGameTime.TotalMilliseconds;
+            }
+            else if(CheatHotkeysSystem.DisableKnockbackKey.JustPressed) {
+                CheatHotkeysSystem.KnockbackDisabled = !CheatHotkeysSystem.KnockbackDisabled;
+                Main.NewText("Knockback has been " + (CheatHotkeysSystem.KnockbackDisabled ? "disabled" : "enabled") + "!");
+            }
         }
 
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-            CheatHotkeys chmod = (CheatHotkeys)mod;
-
-            if(chmod.GodMode) {
+        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
+            if(CheatHotkeysSystem.GodMode) {
                 return false;
             }
 
-            if(chmod.KnockbackDisabled) {
+            if(CheatHotkeysSystem.KnockbackDisabled) {
                 hitDirection = 0;
             }
 
-            return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
+            return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
         }
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-            if(((CheatHotkeys)mod).GodMode) {
+            if(CheatHotkeysSystem.GodMode) {
                 return false;
             }
 
@@ -34,7 +65,7 @@ namespace CheatHotkeys {
         }
 
         public override void PreUpdateBuffs() {
-            if(((CheatHotkeys)mod).GodMode) {
+            if(CheatHotkeysSystem.GodMode) {
                 RemoveDebuffs();
                 RefillMana(false);
             }
@@ -43,36 +74,49 @@ namespace CheatHotkeys {
         }
 
         public override bool CanBeHitByProjectile(Projectile proj) {
-            if(((CheatHotkeys)mod).GodMode) {
+            if(CheatHotkeysSystem.GodMode) {
                 return false;
             }
 
             return base.CanBeHitByProjectile(proj);
         }
 
-        public override bool ConsumeAmmo(Item weapon, Item ammo) {
-            if(((CheatHotkeys)mod).UnlimitedAmmo) {
+        public override bool CanConsumeAmmo(Item weapon, Item ammo) {
+            if(CheatHotkeysSystem.UnlimitedAmmo) {
                 return false;
             }
 
-            return base.ConsumeAmmo(weapon, ammo);
+            return base.CanConsumeAmmo(weapon, ammo);
+        }
+
+        public void ToggleGodMode() {
+            CheatHotkeysSystem.GodMode = !CheatHotkeysSystem.GodMode;
+
+            if(CheatHotkeysSystem.GodMode) {
+                RefillLife();
+                RemoveDebuffs();
+            }
         }
 
         public void RefillLife() {
-            int maxLife = (player.statLifeMax2 > player.statLifeMax ? player.statLifeMax2 : player.statLifeMax);
+            int maxLife = (Player.statLifeMax2 > Player.statLifeMax ? Player.statLifeMax2 : Player.statLifeMax);
 
-            player.statLife = maxLife;
-            player.HealEffect(maxLife, true);
+            Player.statLife = maxLife;
+            Player.HealEffect(maxLife, true);
         }
 
         public void RefillMana(bool showEffect) {
-            int maxMana = (player.statManaMax2 > player.statManaMax ? player.statManaMax2 : player.statManaMax);
+            int maxMana = (Player.statManaMax2 > Player.statManaMax ? Player.statManaMax2 : Player.statManaMax);
 
-            player.statMana = maxMana;
+            Player.statMana = maxMana;
 
             if(showEffect) {
-                player.ManaEffect(maxMana);
+                Player.ManaEffect(maxMana);
             }
+        }
+
+        public void GiveMoney() {
+            Player.QuickSpawnItem(Player.GetSource_DropAsItem(), ItemID.PlatinumCoin, 10);
         }
 
         public void RemoveDebuffs() {
@@ -87,11 +131,49 @@ namespace CheatHotkeys {
                         break;
                     default:
                         if(Main.debuff[i]) {
-                            player.ClearBuff(i);
+                            Player.ClearBuff(i);
                         }
                         break;
                 }
             }
+        }
+
+        public void CycleMiningBuffMode() {
+            MiningBuffMode lastMode = CheatHotkeysSystem.MiningBuff;
+
+            switch(CheatHotkeysSystem.MiningBuff) {
+                case MiningBuffMode.Dangersense:
+                    CheatHotkeysSystem.MiningBuff = MiningBuffMode.Hunter;
+                    break;
+                case MiningBuffMode.Hunter:
+                    CheatHotkeysSystem.MiningBuff = MiningBuffMode.Spelunker;
+                    break;
+                case MiningBuffMode.Spelunker:
+                    CheatHotkeysSystem.MiningBuff = MiningBuffMode.Dangersense;
+                    break;
+                default:
+                    CheatHotkeysSystem.MiningBuff = MiningBuffMode.Dangersense;
+                    break;
+            }
+
+            UpdateMiningBuffs(CheatHotkeysSystem.MiningBuff);
+        }
+
+        public void ToggleMiningBuffModes() {
+            int dangersense = Player.FindBuffIndex((int)MiningBuffMode.Dangersense);
+            int hunter = Player.FindBuffIndex((int)MiningBuffMode.Hunter);
+            int spelunker = Player.FindBuffIndex((int)MiningBuffMode.Spelunker);
+
+            CheatHotkeysSystem.MiningBuff = (CheatHotkeysSystem.MiningBuff == MiningBuffMode.None ? MiningBuffMode.All : MiningBuffMode.None);
+
+            if(dangersense == -1 && hunter == -1 && spelunker == -1 && CheatHotkeysSystem.MiningBuff == MiningBuffMode.None) {
+                CheatHotkeysSystem.MiningBuff = MiningBuffMode.All;
+            }
+            else if(dangersense >= 0 && hunter >= 0 && spelunker >= 0 && CheatHotkeysSystem.MiningBuff == MiningBuffMode.All) {
+                CheatHotkeysSystem.MiningBuff = MiningBuffMode.None;
+            }
+
+            UpdateMiningBuffs(CheatHotkeysSystem.MiningBuff);
         }
 
         public void UpdateMiningBuffs(MiningBuffMode mode) {
@@ -126,25 +208,23 @@ namespace CheatHotkeys {
         public void DisableMiningBuff(MiningBuffMode mode) {
             if(mode == MiningBuffMode.All || mode == MiningBuffMode.None) return;
 
-            CheatHotkeys chmod = (CheatHotkeys)mod;
-
-            if(chmod.EnabledByHotkey[mode]) {
-                player.ClearBuff((int)mode);
-                chmod.EnabledByHotkey[mode] = false;
+            if(CheatHotkeysSystem.EnabledByHotkey[mode]) {
+                Player.ClearBuff((int)mode);
+                CheatHotkeysSystem.EnabledByHotkey[mode] = false;
             }
         }
 
         public void EnableMiningBuff(MiningBuffMode mode) {
             if(mode == MiningBuffMode.All || mode == MiningBuffMode.None) return;
 
-            CheatHotkeys chmod = (CheatHotkeys)mod;
+            CheatHotkeys chmod = (CheatHotkeys)Mod;
 
-            if(player.FindBuffIndex((int)mode) == -1) {
-                chmod.EnabledByHotkey[mode] = true;
+            if(Player.FindBuffIndex((int)mode) == -1) {
+                CheatHotkeysSystem.EnabledByHotkey[mode] = true;
             }
 
-            if(chmod.EnabledByHotkey[mode]) {
-                player.AddBuff((int)mode, BUFF_TIME, true);
+            if(CheatHotkeysSystem.EnabledByHotkey[mode]) {
+                Player.AddBuff((int)mode, BUFF_TIME, true);
             }
         }
     }
