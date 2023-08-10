@@ -1,10 +1,10 @@
 Keybinds: {
-	"Refill Life.DisplayName": Refill  Life
-	"Refill Mana.DisplayName": Refill  Mana
-	"Remove Debuffs.DisplayName": Remove  Debuffs
-	"Mining Buff Mode.DisplayName": Mining  Buff  Mode
-	"Toggle God Mode.DisplayName": Toggle  God  Mode
-	"Toggle Unlimited Ammo.DisplayName": Toggle  Unlimited  Ammo
-	"Give Money.DisplayName": Give  Money
-	"Disable Knockback.DisplayName": Disable  Knockback
+	RefillLife.DisplayName: Refill Life
+	RefillMana.DisplayName: Refill Mana
+	RemoveDebuffs.DisplayName: Remove Debuffs
+	MiningBuffMode.DisplayName: Mining Buff Mode
+	ToggleGodMode.DisplayName: Toggle God Mode
+	ToggleUnlimitedAmmo.DisplayName: Toggle Unlimited Ammo
+	GiveMoney.DisplayName: Give Money
+	DisableKnockback.DisplayName: Disable Knockback
 }

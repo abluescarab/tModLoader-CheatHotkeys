@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace CheatHotkeys {
@@ -35,14 +30,14 @@ namespace CheatHotkeys {
         public static Dictionary<MiningBuffMode, bool> EnabledByHotkey { get; private set; }
 
         public override void Load() {
-            LifeKey = KeybindLoader.RegisterKeybind(Mod, "Refill Life", Keys.Z.ToString());
-            ManaKey = KeybindLoader.RegisterKeybind(Mod, "Refill Mana", Keys.X.ToString());
-            RemoveDebuffsKey = KeybindLoader.RegisterKeybind(Mod, "Remove Debuffs", Keys.C.ToString());
-            MiningBuffKey = KeybindLoader.RegisterKeybind(Mod, "Mining Buff Mode", Keys.V.ToString());
-            GodModeKey = KeybindLoader.RegisterKeybind(Mod, "Toggle God Mode", Keys.F.ToString());
-            UnlimitedAmmoKey = KeybindLoader.RegisterKeybind(Mod, "Toggle Unlimited Ammo", Keys.G.ToString());
-            MoneyKey = KeybindLoader.RegisterKeybind(Mod, "Give Money", Keys.P.ToString());
-            DisableKnockbackKey = KeybindLoader.RegisterKeybind(Mod, "Disable Knockback", Keys.N.ToString());
+            LifeKey = KeybindLoader.RegisterKeybind(Mod, "RefillLife", Keys.Z.ToString());
+            ManaKey = KeybindLoader.RegisterKeybind(Mod, "RefillMana", Keys.X.ToString());
+            RemoveDebuffsKey = KeybindLoader.RegisterKeybind(Mod, "RemoveDebuffs", Keys.C.ToString());
+            MiningBuffKey = KeybindLoader.RegisterKeybind(Mod, "MiningBuffMode", Keys.V.ToString());
+            GodModeKey = KeybindLoader.RegisterKeybind(Mod, "ToggleGodMode", Keys.F.ToString());
+            UnlimitedAmmoKey = KeybindLoader.RegisterKeybind(Mod, "ToggleUnlimitedAmmo", Keys.G.ToString());
+            MoneyKey = KeybindLoader.RegisterKeybind(Mod, "GiveMoney", Keys.P.ToString());
+            DisableKnockbackKey = KeybindLoader.RegisterKeybind(Mod, "DisableKnockback", Keys.N.ToString());
 
             EnabledByHotkey = new Dictionary<MiningBuffMode, bool>(3);
             EnabledByHotkey.Add(MiningBuffMode.Dangersense, false);
