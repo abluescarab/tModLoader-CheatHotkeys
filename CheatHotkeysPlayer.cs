@@ -44,16 +44,16 @@ namespace CheatHotkeys {
             }
         }
 
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
             if(CheatHotkeysSystem.GodMode) {
-                return false;
+                modifiers.FinalDamage *= 0.0f;
             }
 
             if(CheatHotkeysSystem.KnockbackDisabled) {
-                hitDirection = 0;
+                modifiers.HitDirectionOverride = 0;
             }
 
-            return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
+            base.ModifyHurt(ref modifiers);
         }
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
@@ -139,8 +139,6 @@ namespace CheatHotkeys {
         }
 
         public void CycleMiningBuffMode() {
-            MiningBuffMode lastMode = CheatHotkeysSystem.MiningBuff;
-
             switch(CheatHotkeysSystem.MiningBuff) {
                 case MiningBuffMode.Dangersense:
                     CheatHotkeysSystem.MiningBuff = MiningBuffMode.Hunter;
@@ -151,6 +149,8 @@ namespace CheatHotkeys {
                 case MiningBuffMode.Spelunker:
                     CheatHotkeysSystem.MiningBuff = MiningBuffMode.Dangersense;
                     break;
+                case MiningBuffMode.All:
+                case MiningBuffMode.None:
                 default:
                     CheatHotkeysSystem.MiningBuff = MiningBuffMode.Dangersense;
                     break;
@@ -216,9 +216,7 @@ namespace CheatHotkeys {
 
         public void EnableMiningBuff(MiningBuffMode mode) {
             if(mode == MiningBuffMode.All || mode == MiningBuffMode.None) return;
-
-            CheatHotkeys chmod = (CheatHotkeys)Mod;
-
+            
             if(Player.FindBuffIndex((int)mode) == -1) {
                 CheatHotkeysSystem.EnabledByHotkey[mode] = true;
             }
